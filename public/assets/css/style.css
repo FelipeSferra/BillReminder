@@ -1,0 +1,49 @@
+.max-width {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+}
+
+body {
+    font-family: "Figtree", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.form-box {
+    -webkit-border-radius: 5px 5px 5px 5px;
+    border-radius: 5px 5px 5px 5px;
+    background-color: #e2e4e7;
+    -webkit-box-shadow: 0 7px 15px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 7px 15px 0 rgba(0, 0, 0, 0.3);
+}
+
+.btn-custom {
+    border: none;
+    color: #fff;
+    background: linear-gradient(to bottom, #28124b, #160925);
+}
+
+
+.custom-outline-btn {
+    border: 1px solid #28124b;
+    color: #28124b;
+}
+
+.custom-outline-btn:hover {
+    background-color: #28124b;
+    color: #fff;
+}
+
+.header-dashboard {
+    margin-top: 3rem;
+    background: linear-gradient(to bottom, #6c34c5, #2b0b50);
+}
+
+.toggle:focus>.toggle-group>.btn,
+.toggle:hover>.toggle-group>.btn {
+
+    color: #ffffff !important;
+    background-color: var(--bs-btn-hover-bg);
+    border-color: var(--bs-btn-hover-border-color);
+}
