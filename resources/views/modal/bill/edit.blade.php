@@ -35,7 +35,7 @@
                         </div>
                     </div>
                     <div class="row mt-3">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="input-group mt-2">
                                 <span class="input-group-text">R$</span>
                                 <div class="form-floating">
@@ -45,23 +45,21 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-floating mt-2">
                                 <input type="number" class="form-control" id="parcelasEdt" name="parcelasEdt"
                                     min="1" required>
                                 <label for="parcelasEdt">Parcelas</label>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-floating mt-2">
                                 <input type="date" class="form-control" id="vencimentoEdt" name="vencimentoEdt"
                                     required>
                                 <label for="vencimentoEdt">Vencimento</label>
                             </div>
                         </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-floating mt-2">
                                 <select class="form-control" name="recriarEdt" id="recriarEdt" required>
                                     <option selected="true" value="Sim" data-rec="Sim">Sim</option>
