@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BillController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DebtController;
 use App\Http\Controllers\IdentifierController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -21,23 +22,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('menu.main');
-})->middleware(['auth', 'verified'])->name('menu');
+Route::get('/logout', [LoginController::class, 'destroy'])->middleware(['auth'])->name('login.destroy');
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', [LoginController::class, 'index'])->name('login.index');
     Route::post('/login', [LoginController::class, 'store'])->name('login.store');
-});
 
-Route::get('/logout', [LoginController::class, 'destroy'])->middleware(['auth'])->name('login.destroy');
-
-Route::middleware(['guest'])->group(function () {
     Route::get('/register', [RegisterController::class, 'index'])->name('register.index');
     Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
-});
 
-Route::middleware(['guest'])->group(function () {
     Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
     Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
     Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
@@ -45,6 +38,11 @@ Route::middleware(['guest'])->group(function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    //Rota para menu
+    Route::get('/', function () {
+        return view('menu.main');
+    })->name('menu');
+
     //Rotas para identificadores
     Route::get('/identifier', [IdentifierController::class, 'index'])->name('identifier.index');
     Route::get('/identifier/{id}/edit', [IdentifierController::class, 'edit'])->name('identifier.edit');
@@ -61,6 +59,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/bills/{id}', [BillController::class, 'destroy'])->name('bill.destroy');
     Route::post('/bills/{id}', [BillController::class, 'concluded'])->name('bill.concluded');
     Route::post('/filter/{status}/{tipo}', [BillController::class, 'filter'])->name('bill.filter');
+    Route::get('/bills/data', [BillController::class, 'getBillsData'])->name('bill.data');
 
     //Rotas para dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
@@ -72,7 +71,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/notifyUser/{id}', [UserController::class, 'turnNotification'])->name('user.notify');
 
     //Rotas para devedores
-    Route::get('/debt', function () {
-        return view('debt.main');
-    })->name('debt.index');
+    Route::get('/debt', [DebtController::class, 'index'])->name('debt.index');
+});
+
+
+route::get('/teste', function () {
+    return view('layouts.loading');
 });

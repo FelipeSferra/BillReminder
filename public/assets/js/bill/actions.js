@@ -34,9 +34,6 @@ $(document).ready(function () {
     }).catch(function (error) {
         console.log(error);
     });
-
-    loadOptions(identifiers, 'Crt');
-    loadOptions(identifiers, 'Edt');
 });
 
 $('#ModalCreate').on('hidden.bs.modal', function () {
@@ -54,6 +51,13 @@ jscolor.presets.default = {
     format: 'hex'
 };
 
+$('#formCrt').on('shown.bs.modal', function () {
+    loadOptions(identifiers, 'Crt');
+});
+
+$('#formEdt').on('show.bs.modal', function () {
+    loadOptions(identifiers, 'Edt');
+})
 
 //envia o formulario de criação
 $('#formCrt').on('submit', function (e) {
@@ -171,16 +175,6 @@ $('#btnEdit').on('click', function (e) {
                 text: bill.message,
             });
         } else {
-            /* $('#tipo_contaEdt').append(new Option('', '', false, false));
-            identifiers.forEach(function (identifier) {
-                if (identifier.id === bill.TIPO_CONTA && identifier.ATIVO === 'Sim')
-                    $('#tipo_contaEdt').append(new Option(identifier.DESCRICAO, identifier.id, true, true));
-                else if (identifier.ATIVO === 'Nao')
-                    $('#tipo_contaEdt').append(new Option(identifier.DESCRICAO + ' - Desativado', '', true, true));
-                else
-                    $('#tipo_contaEdt').append(new Option(identifier.DESCRICAO, identifier.id, false, false));
-            }) */
-
             $('#tipo_contaEdt option').each(function () {
                 if ($(this).data('tipo') === bill.TIPO_CONTA) {
                     $(this).prop('selected', true);
@@ -372,6 +366,13 @@ function cleanFields() {
 }
 
 function loadOptions(identifiers, tipo) {
+    if (tipo === 'Edt'){
+        $("#tipo_contaEdt").empty();
+        $('#tipo_contaEdt').append(new Option('', '', false, false));
+    }else {
+        $("#tipo_conta").empty();
+        $('#tipo_conta').append(new Option('', '', true, true));
+    }
     identifiers.forEach(function (identifier) {
         if (tipo === 'Edt') {
             if (identifier.ATIVO === 'Sim') {
@@ -384,7 +385,8 @@ function loadOptions(identifiers, tipo) {
                 $('#tipo_contaEdt').append(option);
             }
         }
-        else
+        else {
             $('#tipo_conta').append(new Option(identifier.DESCRICAO, identifier.id, false, false));
+        }
     });
 }

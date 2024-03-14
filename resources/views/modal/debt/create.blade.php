@@ -4,7 +4,7 @@
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="ModalCreateLabel">Cadastro de Contas</h1>
+                    <h1 class="modal-title fs-5" id="ModalCreateLabel">Cadastro de Devedores</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -12,6 +12,12 @@
                         <div class="col-md-12">
                             <div class="form-floating mt-2">
                                 <select class="form-control" name="tipo_conta" id="tipo_conta" required>
+                                    <option value="" selected="true"></option>
+                                    {{--  @foreach ($identifiers as $identifier)
+                                        @if ($identifier->ATIVO === 'Sim')
+                                            <option value="{{ $identifier->id }}">{{ $identifier->DESCRICAO }}</option>
+                                        @endif
+                                    @endforeach --}}
                                 </select>
                                 <label for="tipo_conta">Tipo de conta</label>
                             </div>
@@ -22,6 +28,20 @@
                             <div class="form-floating mt-2">
                                 <textarea name="descricao" id="descricao" class="form-control" style="height:5rem;" required></textarea>
                                 <label for="descricao">Descrição</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="form-floating mt-2">
+                                <input type="text" name="nome" id="nome" class="form-control" required>
+                                <label for="nome">Nome</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mt-2">
+                                <input type="email" name="email" id="email" class="form-control">
+                                <label for="email">E-mail (opcional)</label>
                             </div>
                         </div>
                     </div>

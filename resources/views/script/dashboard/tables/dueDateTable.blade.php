@@ -1,5 +1,5 @@
 <script>
-    let identifiers = {{ Js::from($identifiers) }};
+    let identifiers = @json($identifiers);
     let idColors = {};
 
     @foreach ($identifiers as $identifier)

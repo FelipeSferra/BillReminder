@@ -7,6 +7,7 @@ use App\Models\IdentifierModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class BillController extends Controller
 {
@@ -23,36 +24,16 @@ class BillController extends Controller
     public function index()
     {
         $userId = Auth::user()->id;
-        $bills = $this->objBll->select('*')->where('id_usr', $userId)
-            ->where('STATUS', 'Pagar')
-            ->where('dump', ' ')
+
+        $bills = DB::table('bills')
+            ->select('bills.id', 'bills.TIPO_CONTA', 'bills.DESCRICAO', 'bills.VALOR', 'bills.VENCIMENTO', 'bills.PARCELAS', 'bills.STATUS', 'bills.RECRIAR', 'identifier.DESCRICAO AS TIPO_CONTA_DESCRICAO')
+            ->join('identifier', 'bills.TIPO_CONTA', '=', 'identifier.ID')
+            ->where('bills.id_usr', $userId)
+            ->where('bills.STATUS', 'Pago')
+            ->where('bills.dump', ' ')
             ->get();
 
-        $identifiers = $this->objIdf
-            ->select('*')
-            ->where('id_usr', $userId)
-            ->where('dump', ' ')
-            ->get();
-
-        foreach ($bills as $bill) {
-            $dataDoBanco = Carbon::parse($bill->VENCIMENTO);
-
-            $bill->data_formatada = $dataDoBanco->format('d/m/Y');
-        }
-
-        $billsPerType = $this->groupByValue($bills, 'TIPO_CONTA');
-
-        foreach ($billsPerType as $bill) {
-            foreach ($identifiers as $identifier) {
-                if ($bill->TIPO_CONTA == $identifier->id) {
-                    $bill->DESCRICAO =  $identifier->IDENTIF . " - " . $identifier->DESCRICAO;
-                }
-            }
-        }
-
-        $identifiersMap = $identifiers->pluck('DESCRICAO', 'id')->toArray();
-
-        return view('bill.main', compact('bills', 'billsPerType', 'identifiers', 'identifiersMap'));
+        return view('bill.main', compact('bills'));
     }
 
     // cadastra no banco com os dados
@@ -80,7 +61,7 @@ class BillController extends Controller
     public function edit(string $id)
     {
         $userId = Auth::user()->id;
-        $bills = $this->objBll->select('*')->where('id_usr', $userId)
+        $bills = $this->objBll->select('id', 'TIPO_CONTA', 'DESCRICAO', 'VALOR', 'VENCIMENTO', 'PARCELAS', 'STATUS', 'RECRIAR')->where('id_usr', $userId)
             ->where('id', $id)
             ->where('dump', ' ')
             ->first();
@@ -117,8 +98,10 @@ class BillController extends Controller
     // excluir da tabela (logicamente)
     public function destroy(string $id)
     {
+        $ids = explode(',', $id);
+
         $userId = Auth::user()->id;
-        $data = $this->objBll->where('id', $id)->where('id_usr', $userId)
+        $data = $this->objBll->whereIn('id', $ids)->where('id_usr', $userId)
             ->where('dump', ' ')
             ->update(['dump' => '*']);
         if ($data)
@@ -130,27 +113,33 @@ class BillController extends Controller
     public function concluded(string $id)
     {
         try {
+
+            $ids = explode(',', $id);
+
             $userId = Auth::user()->id;
 
-            $dataRec = $this->objBll->select('*')->where('id_usr', $userId)
-                ->where('id', $id)
-                ->where('dump', '')
-                ->firstOrFail();
+            foreach ($ids as $id) {
+                $dataRec = $this->objBll->select('*')->where('id_usr', $userId)
+                    ->where('id', $id)
+                    ->where('dump', '')
+                    ->firstOrFail();
 
 
-            if ($dataRec->STATUS == 'Pago') {
-                return response()->json(['error' => true, 'errorMessage' => 'A conta já está no status "Pago"']);
+                if ($dataRec->STATUS == 'Pago') {
+                    return response()->json(['error' => true, 'errorMessage' => 'A conta já está no status "Pago"']);
+                }
+
+                $parcelas = max(1, $dataRec->PARCELAS - 1);
+
+                if ($dataRec->RECRIAR == "Sim" || $dataRec->PARCELAS > 1) {
+
+                    $this->recreateBill($dataRec, $userId, $parcelas);
+                }
             }
 
-            $parcelas = max(1, $dataRec->PARCELAS - 1);
-
-            if ($dataRec->RECRIAR == "Sim" || $dataRec->PARCELAS > 1) {
-
-                $this->recreateBill($dataRec, $userId, $parcelas);
-            }
 
             $this->objBll->where('id_usr', $userId)
-                ->where('id', $id)
+                ->whereIn('id', $ids)
                 ->where('dump', '')
                 ->update([
                     'STATUS' => 'Pago',
@@ -202,44 +191,77 @@ class BillController extends Controller
     {
         $userId = Auth::user()->id;
         if ($status != 'Todos') {
-            $bills = $this->objBll->select('*')->where('id_usr', $userId)
-                ->where('STATUS', $status)
-                ->where('dump', ' ')
+            $bills = DB::table('bills')
+                ->select('bills.id', 'bills.TIPO_CONTA', 'bills.DESCRICAO', 'bills.VALOR', 'bills.VENCIMENTO', 'bills.PARCELAS', 'bills.STATUS', 'bills.RECRIAR', 'identifier.DESCRICAO AS TIPO_CONTA_DESCRICAO', 'identifier.IDENTIF AS IDENTIF_CONTA', 'identifier.ID_HEX as ID_HEX')
+                ->join('identifier', 'bills.TIPO_CONTA', '=', 'identifier.ID')
+                ->where('bills.id_usr', $userId)
+                ->where('bills.STATUS', $status)
+                ->where('bills.dump', ' ')
                 ->get();
         } else {
-            $bills = $this->objBll->select('*')->where('id_usr', $userId)
-                ->where('dump', ' ')
+            $bills = DB::table('bills')
+                ->select('bills.id', 'bills.TIPO_CONTA', 'bills.DESCRICAO', 'bills.VALOR', 'bills.VENCIMENTO', 'bills.PARCELAS', 'bills.STATUS', 'bills.RECRIAR', 'identifier.DESCRICAO AS TIPO_CONTA_DESCRICAO', 'identifier.IDENTIF AS IDENTIF_CONTA', 'identifier.ID_HEX as ID_HEX')
+                ->join('identifier', 'bills.TIPO_CONTA', '=', 'identifier.ID')
+                ->where('bills.id_usr', $userId)
+                ->where('bills.dump', ' ')
                 ->get();
         }
         if ($bills) {
-            foreach ($bills as $bill) {
-                $dataDoBanco = Carbon::parse($bill->VENCIMENTO);
-
-                $bill->data_formatada = $dataDoBanco->format('d/m/Y');
-            }
-
             if ($tipo == "Simplificado") {
-                $uniqueTipoConta = $bills->pluck('TIPO_CONTA')->unique();
-                $identifiers = $this->objIdf
-                    ->select('*')
-                    ->where('id_usr', $userId)
-                    ->whereIn('id', $uniqueTipoConta)
-                    ->where('dump', ' ')
-                    ->get();
-                $bills = $this->groupByValue($bills, 'TIPO_CONTA');
-
-                foreach ($bills as $bill) {
-                    foreach ($identifiers as $identifier) {
-                        if ($bill->TIPO_CONTA == $identifier->id) {
-                            $bill->DESCRICAO = $identifier->IDENTIF . " - " . $identifier->DESCRICAO;
+                $bills = json_decode(json_encode($bills), true);
+                $billsPerType = $this->groupByValue($bills, 'TIPO_CONTA');
+                foreach ($billsPerType as $billPerType) {
+                    foreach ($bills as $bill) {
+                        if ($billPerType->TIPO_CONTA == $bill['TIPO_CONTA']) {
+                            $billPerType->DESCRICAO =  $bill['IDENTIF_CONTA'] . " - " . $bill['TIPO_CONTA_DESCRICAO'];
+                            $billPerType->TIPO_CONTA_DESCRICAO = $bill['TIPO_CONTA_DESCRICAO'];
                         }
                     }
                 }
+                $bills = $billsPerType;
             }
 
             $bills = json_encode($bills);
             return response()->json($bills)->header('Content-Type', 'application/json');
         } else
             return response()->json(['error' => true, 'errorMessage' => 'Ocorreu um erro ao processar a solicitação.']);
+    }
+
+    public function getBillsData()
+    {
+        $userId = Auth::user()->id;
+        $bills = DB::table('bills')
+            ->select('bills.id', 'bills.TIPO_CONTA', 'bills.DESCRICAO', 'bills.VALOR', 'bills.VENCIMENTO', 'bills.PARCELAS', 'bills.STATUS', 'bills.RECRIAR', 'identifier.DESCRICAO AS TIPO_CONTA_DESCRICAO', 'identifier.IDENTIF AS IDENTIF_CONTA', 'identifier.ID_HEX as ID_HEX')
+            ->join('identifier', 'bills.TIPO_CONTA', '=', 'identifier.ID')
+            ->where('identifier.dump', ' ')
+            ->where('bills.id_usr', $userId)
+            ->where('bills.STATUS', 'Pagar')
+            ->where('bills.dump', ' ')
+            ->get();
+
+        $bills = json_decode(json_encode($bills), true);
+        $billsPerType = $this->groupByValue($bills, 'TIPO_CONTA');
+        foreach ($billsPerType as $billPerType) {
+            foreach ($bills as $bill) {
+                if ($billPerType->TIPO_CONTA == $bill['TIPO_CONTA']) {
+                    $billPerType->DESCRICAO =  $bill['IDENTIF_CONTA'] . " - " . $bill['TIPO_CONTA_DESCRICAO'];
+                    $billPerType->TIPO_CONTA_DESCRICAO = $bill['TIPO_CONTA_DESCRICAO'];
+                }
+            }
+        }
+
+        $identifiers = $this->objIdf
+            ->select('id', 'DESCRICAO', 'ATIVO')
+            ->where('id_usr', $userId)
+            ->where('dump', ' ')
+            ->get();
+
+        $bills = json_encode($bills);
+        $billsPerType = json_encode($billsPerType);
+        $identifiers = json_encode($identifiers);
+        if ($bills  && $billsPerType && $identifiers)
+            return response()->json(['bills' => $bills, 'billsPerType' => $billsPerType, 'identifiers' => $identifiers])->header('Content-Type', 'application/json');
+        else
+            return response()->json(['error' => true, 'errorMessage' => 'Ocorreu ao recuperar os dados']);
     }
 }

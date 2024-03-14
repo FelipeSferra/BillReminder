@@ -5,6 +5,7 @@ function loadSimpleTable(data, idColors) {
         'lengthChange': false,
         'bPaginate': true,
         'bInfo': false,
+        responsive: true,
         responsive: {
             details: {
                 type: 'column'

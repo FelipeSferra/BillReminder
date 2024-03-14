@@ -25,4 +25,8 @@ class IdentifierModel extends Model
     public function relBllIdf(){
         return $this->hasMany(BillModel::class,'TIPO_CONTA');
     }
+
+    public function relDbtIdf(){
+        return $this->hasMany(DebtModel::class,'TIPO_CONTA');
+    }
 }

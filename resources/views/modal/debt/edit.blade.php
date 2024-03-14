@@ -5,7 +5,7 @@
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="ModalEditLabel">Edição de Contas</h1>
+                    <h1 class="modal-title fs-5" id="ModalEditLabel">Edição de Devedores</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -13,6 +13,15 @@
                         <div class="col-md-12">
                             <div class="form-floating mt-2">
                                 <select class="form-control" name="tipo_contaEdt" id="tipo_contaEdt" required>
+                                    <option value="" selected="true"></option>
+                                    {{-- @foreach ($identifiers as $identifier)
+                                        @if ($identifier->ATIVO === 'Sim')
+                                            <option value="{{ $identifier->id }}" data-tipo = "{{ $identifier->id }}">
+                                                {{ $identifier->DESCRICAO }}</option>
+                                        @else
+                                            <option value="" selected></option>
+                                        @endif
+                                    @endforeach --}}
                                 </select>
                                 <label for="tipo_contaEdt">Tipo de conta</label>
                             </div>
@@ -23,6 +32,20 @@
                             <div class="form-floating mt-2">
                                 <textarea name="descricaoEdt" id="descricaoEdt" class="form-control" style="height:5rem;" required></textarea>
                                 <label for="descricaoEdt">Descrição</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="form-floating mt-2">
+                                <input type="text" name="nomeEdt" id="nomeEdt" class="form-control" required>
+                                <label for="nomeEdt">Nome</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mt-2">
+                                <input type="email" name="emailEdt" id="emailEdt" class="form-control">
+                                <label for="emailEdt">E-mail (opcional)</label>
                             </div>
                         </div>
                     </div>
@@ -39,15 +62,14 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-floating mt-2">
-                                <input type="number" class="form-control" id="parcelasEdt" name="parcelasEdt"
-                                    min="1" required>
+                                <input type="number" class="form-control" id="parcelasEdt" name="parcelasEdt" min="1"
+                                    required>
                                 <label for="parcelasEdt">Parcelas</label>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-floating mt-2">
-                                <input type="date" class="form-control" id="vencimentoEdt" name="vencimentoEdt"
-                                    required>
+                                <input type="date" class="form-control" id="vencimentoEdt" name="vencimentoEdt" required>
                                 <label for="vencimentoEdt">Vencimento</label>
                             </div>
                         </div>
@@ -60,7 +82,9 @@
                                 <label for="recriarEdt">Recriar</label>
                             </div>
                         </div>
+
                         <input type="hidden"name="statusEdt" id="statusEdt">
+
                     </div>
                 </div>
                 <div class="modal-footer">

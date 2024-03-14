@@ -21,10 +21,29 @@
             white-space: nowrap;
             margin: 4px 4px 4px 4px;
         }
+
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+        }
     </style>
 @endsection
 
 @section('content')
+    <div id="loading" class="d-none">
+        <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+            <div class="row">
+                <div class="spinner-border" style="width: 3rem; height: 3rem;color:#aeaeff" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div class="row">
             <div class="d-flex justify-content-end">
@@ -77,7 +96,7 @@
             <div class="mt-3 table-responsive-sm">
                 <div class="card">
                     <div class="card-body">
-                        <table class="table text-center" id="table-bills">
+                        <table class="table text-center" id="table-bills" width="100%">
                             <thead>
                                 <tr>
                                     <th>Tipo</th>
@@ -93,11 +112,11 @@
                 </div>
             </div>
         </div>
-        <div class="row" id="simple">
-            <div class="mt-3 table-responsive-sm ">
+        <div class="row d-none" id="simple">
+            <div class="mt-3 table-responsive-sm">
                 <div class="card">
                     <div class="card-body">
-                        <table class="table text-center" id="table-bills-simple">
+                        <table class="table text-center" id="table-bills-simple" width="100%">
                             <thead>
                                 <tr>
                                     <th>Tipo</th>
@@ -114,9 +133,8 @@
         @include('modal.bill.edit')
     </div>
 @endsection
-
 @section('script')
-    @include('script.bill.actions')
-    @include('script.bill.table-complete')
-    @include('script.bill.table-simple')
+    <script src="{{ url('assets/js/bill/actions.js') }}"></script>
+    <script src="{{ url('assets/js/bill/table-complete.js') }}"></script>
+    <script src="{{ url('assets/js/bill/table-simple.js') }}"></script>
 @endsection
