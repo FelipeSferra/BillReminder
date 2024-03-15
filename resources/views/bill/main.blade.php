@@ -21,29 +21,11 @@
             white-space: nowrap;
             margin: 4px 4px 4px 4px;
         }
-
-        #loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.8);
-            z-index: 9999;
-        }
     </style>
 @endsection
 
 @section('content')
-    <div id="loading" class="d-none">
-        <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
-            <div class="row">
-                <div class="spinner-border" style="width: 3rem; height: 3rem;color:#aeaeff" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('layouts.loading')
     <div class="container">
         <div class="row">
             <div class="d-flex justify-content-end">
