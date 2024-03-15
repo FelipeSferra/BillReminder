@@ -166,35 +166,35 @@ $('#btnEdit').on('click', function (e) {
     var url = route('bill.edit', { 'id': idBill });
 
     axios.get(url).then(function (response) {
-        var bill = response.data;
+        var data = response.data;
 
-        if (bill.error) {
+        if (data.error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: bill.message,
+                text: data.message,
             });
         } else {
             $('#tipo_contaEdt option').each(function () {
-                if ($(this).data('tipo') === bill.TIPO_CONTA) {
+                if ($(this).data('tipo') === data.TIPO_CONTA) {
                     $(this).prop('selected', true);
                 }
             });
 
-            $('#descricaoEdt').val(bill.DESCRICAO);
+            $('#descricaoEdt').val(data.DESCRICAO);
 
-            $('#valorEdt').val(formatValue(bill.VALOR));
+            $('#valorEdt').val(formatValue(data.VALOR));
 
-            $('#parcelasEdt').val(bill.PARCELAS);
+            $('#parcelasEdt').val(data.PARCELAS);
 
-            $('#vencimentoEdt').val(bill.VENCIMENTO);
+            $('#vencimentoEdt').val(data.VENCIMENTO);
 
             $('#recriarEdt option').each(function () {
-                if ($(this).data('rec') === bill.RECRIAR)
+                if ($(this).data('rec') === data.RECRIAR)
                     $(this).prop('selected', true);
             });
 
-            $('#statusEdt').val(bill.STATUS);
+            $('#statusEdt').val(data.STATUS);
 
             $('#ModalEdit').modal('show');
         }
