@@ -38,15 +38,6 @@
             rel="stylesheet">
         <title>@yield('title')</title>
 
-        <style>
-            .ph-item,
-            .ph-picture {
-                width: 100%;
-                height: 100%;
-                padding: 0;
-                margin: 0;
-            }
-        </style>
         @yield('style')
     </head>
 
@@ -77,9 +68,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment-with-locales.min.js"></script>
         @yield('script_general')
         @yield('script')
-        <script>
-            @yield('script-new')
-        </script>
     </body>
 
     </html>
