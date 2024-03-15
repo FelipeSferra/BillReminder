@@ -23,17 +23,7 @@ class BillController extends Controller
     // Retorna a view principal
     public function index()
     {
-        $userId = Auth::user()->id;
-
-        $bills = DB::table('bills')
-            ->select('bills.id', 'bills.TIPO_CONTA', 'bills.DESCRICAO', 'bills.VALOR', 'bills.VENCIMENTO', 'bills.PARCELAS', 'bills.STATUS', 'bills.RECRIAR', 'identifier.DESCRICAO AS TIPO_CONTA_DESCRICAO')
-            ->join('identifier', 'bills.TIPO_CONTA', '=', 'identifier.ID')
-            ->where('bills.id_usr', $userId)
-            ->where('bills.STATUS', 'Pago')
-            ->where('bills.dump', ' ')
-            ->get();
-
-        return view('bill.main', compact('bills'));
+        return view('bill.main');
     }
 
     // cadastra no banco com os dados
