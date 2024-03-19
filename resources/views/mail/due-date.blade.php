@@ -48,23 +48,91 @@
                                     Vencimento</th>
                                 <th
                                     style="border: 1px solid #dddddd;padding: 8px;background-color: #212529; color: #fff;text-align:center;">
-                                    Dias até o vencimento</th>
+                                    Vencem em</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($bills as $bill)
+                            @if (!empty($bills))
+                                @foreach ($bills as $bill)
+                                    <tr>
+                                        <td
+                                            style="border: 1px solid #dddddd;color: #000000;text-align: left;padding: 8px;">
+                                            {{ $bill->DESCRICAO }}</td>
+                                        <td
+                                            style="border: 1px solid #dddddd;color: #000000;text-align: left;padding: 8px;">
+                                            R$ {{ $bill->VALOR }}</td>
+                                        <td
+                                            style="border: 1px solid #dddddd;color: #000000;text-align: left;padding: 8px;">
+                                            {{ $bill->VENCIMENTO }}</td>
+                                        <td
+                                            style="border: 1px solid #dddddd;color: #000000;text-align: left;padding: 8px;">
+                                            {{ $bill->Dias }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
                                 <tr>
-                                    <td style="border: 1px solid #dddddd;color: #000000;text-align: left;padding: 8px;">
-                                        {{ $bill->DESCRICAO }}</td>
-                                    <td style="border: 1px solid #dddddd;color: #000000;text-align: left;padding: 8px;">
-                                        R$ {{ $bill->VALOR }}</td>
-                                    <td style="border: 1px solid #dddddd;color: #000000;text-align: left;padding: 8px;">
-                                        {{ $bill->VENCIMENTO }}</td>
-                                    <td style="border: 1px solid #dddddd;color: #000000;text-align: left;padding: 8px;">
-                                            {{ $bill->Dias }} Dias
+                                    <td style="border: 1px solid #dddddd;color: #000000;text-align: left;padding: 8px;"
+                                        colspan="4">
+                                        <center>Sem contas próximas do vencimento!</center>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+        <table role="presentation" border="0" width="100%" cellspacing="0">
+            <tr>
+                <td style="padding: 30px 30px 30px 60px;">
+                    <p style="font-size: 16px; margin:0 0 20px 0;color: #FF0000; font-family:Arial;">Essas são as contas
+                        que já venceram: </p>
+                    <table width="100%" style="border-collapse: collapse;font-family:Arial;">
+                        <thead>
+                            <tr>
+                                <th
+                                    style="border: 1px solid #dddddd;padding: 8px;background-color: #212529; color: #fff;text-align:center;">
+                                    Descrição</th>
+                                <th
+                                    style="border: 1px solid #dddddd;padding: 8px;background-color: #212529; color: #fff;text-align:center;">
+                                    Valor</th>
+                                <th
+                                    style="border: 1px solid #dddddd;padding: 8px;background-color: #212529; color: #fff;text-align:center;">
+                                    Vencimento</th>
+                                <th
+                                    style="border: 1px solid #dddddd;padding: 8px;background-color: #212529; color: #fff;text-align:center;">
+                                    Dias em atraso</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (!empty($billOverDue))
+                                @foreach ($billOverDue as $bill)
+                                    <tr>
+                                        <td
+                                            style="border: 1px solid #dddddd;color: #000000;text-align: left;padding: 8px;">
+                                            {{ $bill->DESCRICAO }}</td>
+                                        <td
+                                            style="border: 1px solid #dddddd;color: #000000;text-align: left;padding: 8px;">
+                                            R$ {{ $bill->VALOR }}</td>
+                                        <td
+                                            style="border: 1px solid #dddddd;color: #000000;text-align: left;padding: 8px;">
+                                            {{ $bill->VENCIMENTO }}</td>
+                                        <td
+                                            style="border: 1px solid #dddddd;color: #000000;text-align: left;padding: 8px;">
+                                            {{ $bill->Atraso }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td style="border: 1px solid #dddddd;color: #000000;text-align: left;padding: 8px;"
+                                        colspan="4">
+                                        <center>Sem contas em atraso!</center>
+                                    </td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
                 </td>

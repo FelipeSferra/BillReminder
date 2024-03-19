@@ -18,7 +18,7 @@ class DueDate extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(protected $user, protected $billData)
+    public function __construct(protected $user, protected $billData, protected $billOverDue = [])
     {
     }
 
@@ -42,6 +42,7 @@ class DueDate extends Mailable
             with: [
                 'user' => $this->user,
                 'bills' => $this->billData,
+                'billOverDue' => $this->billOverDue
             ]
         );
     }

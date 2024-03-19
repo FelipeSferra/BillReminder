@@ -37,27 +37,41 @@ class AutoDueDateMail extends Command
         if (count($users) > 0) {
             foreach ($users as $user) {
                 $billDueDate = array();
+                $billOverDue = array();
                 $bills = BillModel::where('dump', '')->where('ID_USR', $user->id)
                     ->where('STATUS', 'Pagar')->get();
                 foreach ($bills as $bill) {
                     $venc = Carbon::parse($bill->VENCIMENTO);
                     $diff = $venc->diffInDays(Carbon::now()) + 1;
-                    if ($diff == $user->VENC_DIAS) {
-                        $bill->Dias = $diff;
-                        $billDueDate[] = $this->getBills($bill, $venc);
-                    } elseif ($diff == 3) {
-                        $bill->Dias = $diff;
-                        $billDueDate[] = $this->getBills($bill, $venc);
-                    } elseif ($venc->format('d/m/Y') === Carbon::now()->format('d/m/Y')) {
-                        $bill->Dias = $diff;
-                        $billDueDate[] = $this->getBills($bill, $venc);
+                    if ($venc >= Carbon::now()) {
+                        if ($diff == $user->VENC_DIAS) {
+                            $bill->Dias = $diff . ' Dias';
+                            $billDueDate[] = $this->getBills($bill, $venc);
+                        } elseif ($diff == 3) {
+                            $bill->Dias = $diff . ' Dias';
+                            $billDueDate[] = $this->getBills($bill, $venc);
+                        } elseif ($venc->format('d/m/Y') === Carbon::now()->format('d/m/Y')) {
+                            $bill->Dias = 'Hoje';
+                            $billDueDate[] = $this->getBills($bill, $venc);
+                        }
+                    } else {
+                        $bill->Atraso = $diff . ' Dias';
+                        $billOverDue[] = $this->getBills($bill, $venc);
                     }
                 }
-                if (!empty($billDueDate)) {
-                    Mail::to($user->email)->send(new DueDate($user, $billDueDate));
+                if (!empty($billDueDate) || !empty($billOverDue)) {
+                    if (!empty($billOverDue))
+                        Mail::to($user->email)->send(new DueDate($user, $billDueDate, $billOverDue));
+                    else
+                        Mail::to($user->email)->send(new DueDate($user, $billDueDate));
+
                     echo "\t\tEmail enviado para " . $user->email . " \n\n";
                     if (!empty($user->EMAIL_SECUNDARIO)) {
-                        Mail::to($user->EMAIL_SECUNDARIO)->send(new DueDate($user, $billDueDate));
+                        if (!empty($billOverDue))
+                            Mail::to($user->email)->send(new DueDate($user, $billDueDate, $billOverDue));
+                        else
+                            Mail::to($user->email)->send(new DueDate($user, $billDueDate));
+
                         echo "\t\tEmail enviado para " . $user->EMAIL_SECUNDARIO . " \n\n";
                     }
                 } else {
