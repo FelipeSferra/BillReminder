@@ -31,7 +31,7 @@
                             <div class="input-group mt-2">
                                 <span class="input-group-text">R$</span>
                                 <div class="form-floating">
-                                    <input type="number" class="form-control" id="valorEdt" name="valorEdt"
+                                    <input type="number" class="form-control" pattern="[0-9]+([,\.][0-9]+)?" id="valorEdt" name="valorEdt"
                                         step="0.01" min="1" required>
                                     <label for="valorEdt">Valor</label>
                                 </div>

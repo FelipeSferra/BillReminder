@@ -7,7 +7,6 @@ use App\Models\IdentifierModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class BillController extends Controller
 {
@@ -48,6 +47,7 @@ class BillController extends Controller
             return response()->json(['error' => true, 'errorMessage' => 'Erro ao criar a conta, tente novamente!']);
     }
 
+    // envia os dados para preencher o formulario de edicao
     public function edit(string $id)
     {
         $userId = Auth::user()->id;
@@ -100,6 +100,7 @@ class BillController extends Controller
             return response()->json(['error' => true, 'errorMessage' => 'Não foi possível excluir a conta!']);
     }
 
+    // marca a conta como paga
     public function concluded(string $id)
     {
         try {
@@ -142,6 +143,7 @@ class BillController extends Controller
         }
     }
 
+    // recria a conta conforme a logica de pagamento
     private function recreateBill($dataRec, $userId, $parcelas)
     {
         $newVenc = Carbon::parse($dataRec->VENCIMENTO);
@@ -160,6 +162,7 @@ class BillController extends Controller
         ]);
     }
 
+    // utilizado para não precisar de dois tipos de consulta SQL
     protected function groupByValue($array, $key)
     {
         $result = [];
@@ -177,11 +180,12 @@ class BillController extends Controller
         return array_values($result);
     }
 
+    // retorna a consulta conforme o filtro da pagina
     public function filter($status, $tipo)
     {
         $userId = Auth::user()->id;
         if ($status != 'Todos') {
-            $bills = DB::table('bills')
+            $bills = $this->objBll
                 ->select('bills.id', 'bills.TIPO_CONTA', 'bills.DESCRICAO', 'bills.VALOR', 'bills.VENCIMENTO', 'bills.PARCELAS', 'bills.STATUS', 'bills.RECRIAR', 'identifier.DESCRICAO AS TIPO_CONTA_DESCRICAO', 'identifier.IDENTIF AS IDENTIF_CONTA', 'identifier.ID_HEX as ID_HEX')
                 ->join('identifier', 'bills.TIPO_CONTA', '=', 'identifier.ID')
                 ->where('bills.id_usr', $userId)
@@ -189,7 +193,7 @@ class BillController extends Controller
                 ->where('bills.dump', ' ')
                 ->get();
         } else {
-            $bills = DB::table('bills')
+            $bills = $this->objBll
                 ->select('bills.id', 'bills.TIPO_CONTA', 'bills.DESCRICAO', 'bills.VALOR', 'bills.VENCIMENTO', 'bills.PARCELAS', 'bills.STATUS', 'bills.RECRIAR', 'identifier.DESCRICAO AS TIPO_CONTA_DESCRICAO', 'identifier.IDENTIF AS IDENTIF_CONTA', 'identifier.ID_HEX as ID_HEX')
                 ->join('identifier', 'bills.TIPO_CONTA', '=', 'identifier.ID')
                 ->where('bills.id_usr', $userId)
@@ -217,10 +221,11 @@ class BillController extends Controller
             return response()->json(['error' => true, 'errorMessage' => 'Ocorreu um erro ao processar a solicitação.']);
     }
 
+    // preenche a tabela ao logar na pagina
     public function getBillsData()
     {
         $userId = Auth::user()->id;
-        $bills = DB::table('bills')
+        $bills = $this->objBll
             ->select('bills.id', 'bills.TIPO_CONTA', 'bills.DESCRICAO', 'bills.VALOR', 'bills.VENCIMENTO', 'bills.PARCELAS', 'bills.STATUS', 'bills.RECRIAR', 'identifier.DESCRICAO AS TIPO_CONTA_DESCRICAO', 'identifier.IDENTIF AS IDENTIF_CONTA', 'identifier.ID_HEX as ID_HEX')
             ->join('identifier', 'bills.TIPO_CONTA', '=', 'identifier.ID')
             ->where('identifier.dump', ' ')

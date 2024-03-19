@@ -89,8 +89,6 @@ function loadSimpleTable(data, idColors) {
         if (colIdx === 2) {
             var valorFormatado = formatValue(this.data());
 
-            valorFormatado = valorFormatado.replace('.', '|').replace(',', '.').replace('|', ',');
-
             this.data(valorFormatado);
         }
     });

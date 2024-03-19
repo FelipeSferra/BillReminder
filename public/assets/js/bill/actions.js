@@ -18,7 +18,6 @@ $(document).ready(function () {
                 text: data.errorMessage
             });
         } else {
-            $('#loading').addClass('d-none');
             bills = JSON.parse(data.bills);
             identifiers = JSON.parse(data.identifiers);
             const billsPerType = JSON.parse(data.billsPerType);
@@ -29,6 +28,7 @@ $(document).ready(function () {
 
             loadCompleteTable(bills, idColors);
             loadSimpleTable(billsPerType, idColors);
+            $('#loading').addClass('d-none');
         }
 
     }).catch(function (error) {
@@ -183,7 +183,7 @@ $('#btnEdit').on('click', function (e) {
 
             $('#descricaoEdt').val(data.DESCRICAO);
 
-            $('#valorEdt').val(formatValue(data.VALOR));
+            $('#valorEdt').val(data.VALOR);
 
             $('#parcelasEdt').val(data.PARCELAS);
 
@@ -366,10 +366,10 @@ function cleanFields() {
 }
 
 function loadOptions(identifiers, tipo) {
-    if (tipo === 'Edt'){
+    if (tipo === 'Edt') {
         $("#tipo_contaEdt").empty();
         $('#tipo_contaEdt').append(new Option('', '', false, false));
-    }else {
+    } else {
         $("#tipo_conta").empty();
         $('#tipo_conta').append(new Option('', '', true, true));
     }
