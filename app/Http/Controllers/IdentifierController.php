@@ -21,11 +21,7 @@ class IdentifierController extends Controller
     // Retorna a view principal
     public function index()
     {
-        $userId = Auth::user()->id;
-        $identifiers = $this->objIdf->select('*')->where('id_usr', $userId)
-            ->where('dump', ' ')
-            ->get();
-        return view('identifier.main', compact('identifiers'));
+        return view('identifier.main');
     }
 
     // cadastra no banco com os dados
@@ -49,13 +45,13 @@ class IdentifierController extends Controller
     public function edit(string $id)
     {
         $userId = Auth::user()->id;
-        $identifier = $this->objIdf->select('*')->where('id_usr', $userId)
+        $identifier = $this->objIdf->select('id', 'IDENTIF', 'DESCRICAO', 'ATIVO', 'ID_HEX')->where('id_usr', $userId)
             ->where('id', $id)
             ->where('dump', ' ')
             ->first();
 
         if (!$identifier) {
-            return response()->json(['notFound' => true]);
+            return response()->json(['error' => true, 'errorMessage' => 'O identificador não foi encontrado, tente novamente.']);
         }
 
         return response()->json($identifier);
@@ -86,7 +82,7 @@ class IdentifierController extends Controller
         $userId = Auth::user()->id;
         $exists = $this->objBll->select('*')->where('id_usr', $userId)->where('dump', ' ')->where('tipo_conta', $id)->count();
         if ($exists > 0) {
-            return response()->json(['exists' => true]);
+            return response()->json(['error' => true, 'errorMessage' => 'Não é possível excluir o item, pois ele está sendo utilizado.Neste caso você deve desabilitar o item.']);
         } else {
             $this->objIdf->where('id', $id)
                 ->where('dump', ' ')
@@ -95,14 +91,20 @@ class IdentifierController extends Controller
         }
     }
 
-    public function getList()
+    public function getIdentifiersData()
     {
         $userId = Auth::user()->id;
-        $identifiers = $this->objIdf->select('*')->where('id_usr', $userId)
+        $identifiers = $this->objIdf
+            ->select('id', 'IDENTIF', 'DESCRICAO', 'ATIVO', 'ID_HEX')
+            ->where('id_usr', $userId)
             ->where('dump', ' ')
             ->get();
 
         $identifiers = json_encode($identifiers);
-        return response()->json($identifiers)->header('Content-Type', 'application/json');
+
+        if ($identifiers)
+            return response()->json(['identifiers' => $identifiers])->header('Content-Type', 'application/json');
+        else
+            return response()->json(['error' => true, 'errorMessage' => 'Ocorreu ao recuperar os dados']);
     }
 }

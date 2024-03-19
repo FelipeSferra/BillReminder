@@ -20,6 +20,7 @@
 @endsection
 
 @section('content')
+    @include('layouts.loading')
     <div class="container">
         <div class="row">
             <div class="mt-3 col-md-12 text-end">
@@ -60,6 +61,6 @@
 @endsection
 
 @section('script')
-    @include('script.identifier.actions')
-    @include('script.identifier.table-identifiers')
+    <script src="{{ url('assets/js/identifier/actions.js') }}"></script>
+    <script src="{{ url('assets/js/identifier/table-identifiers.js') }}"></script>
 @endsection
