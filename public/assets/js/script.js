@@ -8,7 +8,7 @@ function hexToRgb(hex) {
     return [r, g, b];
 }
 
-function applyCss(div, id, idColors,hexColor = '') {
+function applyCss(div, id, idColors, hexColor = '') {
     if (id !== 0 && hexColor === '') {
         hexColor = idColors[id];
     }
@@ -42,6 +42,8 @@ function formatValue(valor) {
     valor = parseFloat(valor);
 
     let valorFormatado = valor.toFixed(2);
+
+    valorFormatado = valorFormatado.replace('.', ',');
 
     return valorFormatado;
 }
