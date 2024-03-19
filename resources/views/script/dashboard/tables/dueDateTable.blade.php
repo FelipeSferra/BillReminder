@@ -1,40 +1,43 @@
 <script>
-    let identifiers = @json($identifiers);
-    let idColors = {};
-
-    @foreach ($identifiers as $identifier)
-        idColors[{{ $identifier->id }}] = "{{ $identifier->ID_HEX }}";
-    @endforeach
-
     function loadDueDate(data) {
+        var idColors = {};
 
-        var identifiersColor;
+        data.forEach(function(color) {
+            idColors[color.TIPO_CONTA] = color.ID_HEX;
+        });
+
         const table = $('#dueDateTable').DataTable({
             'bFilter': false,
             'lengthChange': false,
             'bPaginate': false,
             'bInfo': false,
             "columnDefs": [{
-                'targets': 0,
-                'createdCell': function(td, cellData, rowData, row, col) {
-                    if (rowData.TIPO_CONTA in idColors) {
-                        $(td).empty();
+                    'targets': 0,
+                    'createdCell': function(td, cellData, rowData, row, col) {
+                        if (rowData.TIPO_CONTA in idColors) {
+                            $(td).empty();
 
-                        var div = $('<div/>', {
-                            class: 'tipo-conta div-inner text-center',
-                            'data-id': rowData.TIPO_CONTA,
-                            text: cellData
-                        });
+                            var div = $('<div/>', {
+                                class: 'tipo-conta div-inner text-center',
+                                'data-id': rowData.TIPO_CONTA,
+                                text: cellData
+                            });
 
-                        applyCss(div, rowData.TIPO_CONTA, idColors);
+                            applyCss(div, rowData.TIPO_CONTA, idColors);
 
-                        $(td).append(div);
+                            $(td).append(div);
+                        }
                     }
+                },
+                {
+                    'targets': 1,
+                    'render': DataTable.render.datetime('DD/MM/YYYY')
+                },
+                {
+                    'targets': '_all',
+                    "orderable": false,
                 }
-            }, {
-                'targets': '_all',
-                "orderable": false,
-            }],
+            ],
             "order": [
                 [1, "desc"]
             ],

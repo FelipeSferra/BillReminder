@@ -37,7 +37,7 @@
                         <div class="row">
                             <div class="col-8 mt-3">
                                 <p class="text-sm mb-0 text-uppercase font-weight-bold">Contas à vencer nesse mês</p>
-                                <h5 class="font-weight-bolder">{{ $countDueDate }}</h5>
+                                <h5 class="font-weight-bolder" id="billsDue"></h5>
                             </div>
                             <div class="col-4 text-end">
                                 <div class="icon icon-shape bg-gradient-danger shadow-danger text-center rounded-circle">
@@ -71,7 +71,7 @@
                         <div class="row">
                             <div class="col-8 mt-3">
                                 <p class="text-sm mb-0 text-uppercase font-weight-bold">Contas em aberto</p>
-                                <h5 class="font-weight-bolder">{{ $countBills }}</h5>
+                                <h5 class="font-weight-bolder" id="openBills"></h5>
                             </div>
                             <div class="col-4 text-end">
                                 <div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
@@ -141,9 +141,14 @@
 @endsection
 
 @section('script')
-    @include('script.dashboard.general')
+<script src="{{url('assets/js/dashboard/general.js')}}"></script>
+<script src="{{url('assets/js/dashboard/charts/allChart.js')}}"></script>
+<script src="{{url('assets/js/dashboard/charts/monthlyChart.js')}}"></script>
+<script src="{{url('assets/js/dashboard/tables/dueDateTable.js')}}"></script>
+<script src="{{url('assets/js/dashboard/tables/topBillsTable.js')}}"></script>
+    {{-- @include('script.dashboard.general')
     @include('script.dashboard.charts.allChart')
     @include('script.dashboard.charts.monthlyChart')
     @include('script.dashboard.tables.dueDateTable')
-    @include('script.dashboard.tables.topBillsTable')
+    @include('script.dashboard.tables.topBillsTable') --}}
 @endsection

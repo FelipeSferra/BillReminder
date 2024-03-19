@@ -1,6 +1,11 @@
 <script>
     function loadTopBills(data) {
-        var identifiersColor;
+        var idColors = {};
+
+        data.forEach(function(color) {
+            idColors[color.TIPO_CONTA] = color.ID_HEX;
+        });
+
         const table = $('#topBillsTable').DataTable({
             'bFilter': false,
             'lengthChange': false,
@@ -64,16 +69,13 @@
             }]
         });
         table.cells().every(function(rowIdx, colIdx) {
-            if (colIdx === 1){
+            if (colIdx === 1) {
                 let valorFormatado = formatValue(this.data());
-
-                valorFormatado = valorFormatado.replace('.', '|').replace(',', '.').replace('|', ',');
 
                 this.data(valorFormatado);
             }
         });
         $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc').addClass(
             'no-sorting');
-
     }
 </script>
