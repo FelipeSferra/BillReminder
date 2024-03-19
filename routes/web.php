@@ -49,7 +49,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/identifier/create', [IdentifierController::class, 'store'])->name('identifier.create');
     Route::put('/identifier/{id}', [IdentifierController::class, 'update'])->name('identifier.update');
     Route::delete('/identifier/{id}', [IdentifierController::class, 'destroy'])->name('identifier.destroy');
-    Route::get('/identifier/getList', [IdentifierController::class, 'getList'])->name('identifier.reload');
+    Route::get('/identifier/data', [IdentifierController::class, 'getIdentifiersData'])->name('identifier.data');
 
     //Rotas para contas
     Route::get('/bills', [BillController::class, 'index'])->name('bill.index');
@@ -63,6 +63,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     //Rotas para dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::get('/dashboard/data', [DashboardController::class, 'getDashboardData'])->name('dashboard.data');
 
     //Rotas para usuário
     Route::get('/user', [UserController::class, 'index'])->name('user.config');
