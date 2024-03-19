@@ -128,8 +128,6 @@
             if (colIdx === 2) {
                 let valorFormatado = formatValue(this.data());
 
-                valorFormatado = valorFormatado.replace('.', '|').replace(',', '.').replace('|', ',');
-
                 this.data(valorFormatado);
             }
         });
