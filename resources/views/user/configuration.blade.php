@@ -13,6 +13,7 @@
 @endsection
 
 @section('content')
+    @include('layouts.loading')
     <div class="container">
         <div class="row gutters">
             <div class="col-md-6 mb-3">
@@ -60,6 +61,5 @@
 @endsection
 
 @section('script')
-    @include('script.user.notifications')
-    @include('script.user.userInfo')
+    <script src="{{ url('assets/js/user/actions.js') }}?v={{ rand(1, 1000) }}"></script>
 @endsection

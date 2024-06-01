@@ -25,58 +25,40 @@
 @endsection
 
 @section('content')
+    @include('layouts.loading')
     <div class="container">
-        <div class="row">
-            <div class="d-flex justify-content-end">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label>
-                                Status:
-                            </label>
-                            <select class="form-control mx-2" id="filtroStatus" name="filtroStatus">
-                                <option value="Todos">Todos</option>
-                                <option value="Pagar"selected>Pagar</option>
-                                <option value="Pago">Pago</option>
-                            </select>
-                        </div>
 
-                        <div class="col-md-6 text-end" id="btn-group">
-                            <button type="button" id="btnNew" class="btn btn-outline-dark mt-4" data-bs-toggle="modal"
-                                data-bs-target="#ModalCreate"><i class="fa-solid fa-plus"></i>
-                                Novo
-                            </button>
-                            <button type="button" id="btnEdit" class="btn btn-outline-primary mt-4"
-                                data-bs-toggle="modal" data-bs-target="#ModalEdit" disabled><i class="fa-solid fa-pen"></i>
-                                Editar
-                            </button>
-                            <button type="button" id="btnConcluded" class="btn btn-outline-success mt-4" disabled><i
-                                    class="fa-solid fa-check"></i>
-                                Pagar
-                            </button>
-                            <button type="button" id="btnDelete" class="btn btn-outline-danger mt-4" disabled><i
-                                    class="fa-solid fa-trash"></i>
-                                Excluir
-                            </button>
-                        </div>
-                    </div>
+        <div class="row">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="p-2">
+                    <p class="fs-5">Devedores</p>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-outline-dark mt-2" data-bs-toggle="modal"
+                        data-bs-target="#ModalCreate"><i class="fa-solid fa-plus"></i>
+                        Novo
+                    </button>
+                    <button type="button" id="btnEdit" class="btn btn-outline-primary mt-2" data-bs-toggle="modal"
+                        data-bs-target="#ModalEdit" disabled><i class="fa-solid fa-pen"></i>
+                        Editar
+                    </button>
+                    <button type="button" id="btnDelete" class="btn btn-outline-danger mt-2" disabled><i
+                            class="fa-solid fa-trash"></i>
+                        Excluir
+                    </button>
                 </div>
             </div>
         </div>
-        <div class="row" id="complete">
+        <div class="row">
             <div class="mt-3 table-responsive-sm">
                 <div class="card">
                     <div class="card-body">
-                        <table class="table text-center" id="table-debts">
+                        <table class="table" id="table-debt">
                             <thead>
                                 <tr>
-                                    <th>Tipo</th>
-                                    <th>Descrição</th>
                                     <th>Nome</th>
-                                    <th>Valor</th>
-                                    <th>Status</th>
-                                    <th>Venc.</th>
-                                    <th>Parcelas</th>
+                                    <th>Email</th>
+                                    <th>Ativo</th>
                                 </tr>
                             </thead>
                         </table>
@@ -90,6 +72,6 @@
 @endsection
 
 @section('script')
-    @include('script.debt.actions')
-    @include('script.debt.tableDebt')
+    <script src="{{ url('assets/js/debt/actions.js') }}?v={{rand(1,10000)}}"></script>
+    <script src="{{ url('assets/js/debt/tableDebt.js') }}?v={{rand(1,10000)}}"></script>
 @endsection

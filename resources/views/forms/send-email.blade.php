@@ -1,4 +1,4 @@
-<form method="POST" action="{{ route('user.notify', $userInfo->id) }}">
+<form method="POST" id="formNotif" name="formNotif">
     @method('PUT')
     @csrf
     <div class="col-md-12 mt-3">

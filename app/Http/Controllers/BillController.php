@@ -38,7 +38,6 @@ class BillController extends Controller
             'PARCELAS' => $request->parcelas,
             'RECRIAR' => $request->recriar,
             'STATUS' => $request->status,
-            'CRIADO_EM' => Carbon::now(),
         ]);
 
         if ($data)
@@ -158,7 +157,6 @@ class BillController extends Controller
             'PARCELAS' => $parcelas,
             'RECRIAR' => $dataRec->RECRIAR,
             'STATUS' => $dataRec->STATUS,
-            'CRIADO_EM' => Carbon::now()
         ]);
     }
 
@@ -257,6 +255,6 @@ class BillController extends Controller
         if ($bills  && $billsPerType && $identifiers)
             return response()->json(['bills' => $bills, 'billsPerType' => $billsPerType, 'identifiers' => $identifiers])->header('Content-Type', 'application/json');
         else
-            return response()->json(['error' => true, 'errorMessage' => 'Ocorreu ao recuperar os dados']);
+            return response()->json(['error' => true, 'errorMessage' => 'Ocorreu um erro ao recuperar os dados']);
     }
 }

@@ -27,12 +27,12 @@
                                 <div class="mt-3 input-group">
                                     <span class="input-group-text"><i class="fa-regular fa-envelope fa-sm"></i></span>
                                     <input type="email" id="email" name="email" class="form-control"
-                                        placeholder="E-mail">
+                                        placeholder="E-mail" value="{{ app('request')->input('email') }}" readonly>
                                 </div>
                                 <div class="mt-3 input-group">
                                     <span class="input-group-text"><i class="fa-regular fa-key fa-sm"></i></span>
                                     <input type="password" id="password" name="password" class="form-control"
-                                        placeholder="Senha" oninput="checkPasswordMatch()">
+                                        placeholder="Senha">
                                 </div>
                                 <div class="mt-3 input-group">
                                     <span class="input-group-text"><i class="fa-regular fa-key fa-sm"></i></span>
@@ -57,5 +57,5 @@
     </div>
 @endsection
 @section('script')
-    @include('script.auth.reset-password.script')
+    <script src="{{ url('assets/js/auth/reset-password/functions.js') }}"></script>
 @endsection

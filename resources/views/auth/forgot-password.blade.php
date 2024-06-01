@@ -13,11 +13,6 @@
                         <div class="pt-3 px-3 text-start mb-2">
                             <p>Esqueceu sua senha? Sem problemas. Apenas informe seu endereço de e-mail que enviaremos um
                                 link que permitirá definir uma nova senha.</p>
-                            @if (session('status'))
-                                <p class="mt-3 text-success">
-                                    {{ session('status') }}
-                                </p>
-                            @endif
                         </div>
 
                         <form method="POST" action="{{ route('password.email') }}">

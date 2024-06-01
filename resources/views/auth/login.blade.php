@@ -82,8 +82,9 @@
                                 <div class="mt-3 row">
                                     <div class="col-md-12 mt-2 text-start">
                                         <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" name="remember" id="remember" value="1">
-                                        <label for="remember">Mantenha-me conectado</label>
+                                            <input type="checkbox" class="form-check-input" name="remember" id="remember"
+                                                value="1">
+                                            <label for="remember">Mantenha-me conectado</label>
                                         </div>
                                     </div>
                                 </div>
@@ -117,7 +118,7 @@
                                     <div class="mt-3 input-group">
                                         <span class="input-group-text"><i class="fa-regular fa-key fa-sm"></i></span>
                                         <input type="password" id="password-signup" name="password" class="form-control"
-                                            placeholder="Senha" oninput="checkPasswordMatch()">
+                                            placeholder="Senha">
                                     </div>
                                     <div class="mt-3 input-group">
                                         <span class="input-group-text"><i class="fa-regular fa-key fa-sm"></i></span>
@@ -143,5 +144,5 @@
     </div>
 @endsection
 @section('script')
-    @include('script.auth.login.script')
+    <script src="{{ url('assets/js/auth/login/functions.js') }}"></script>
 @endsection

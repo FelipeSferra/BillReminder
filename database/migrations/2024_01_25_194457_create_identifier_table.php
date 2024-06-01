@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('ID_USR')->references('id')->on('users')->onUpdate('cascade');
             $table->string('IDENTIF',40);
             $table->string('DESCRICAO', 255);
+            $table->string('ID_HEX',255)->default('#FFFFFF');
             $table->char('ATIVO', 3)->default('Sim');
             $table->char('DUMP')->default(' ');
             $table->timestamps();

@@ -35,6 +35,10 @@ class AutoExpensesMail extends Command
         $users = User::where('dump', '')->where('NOTIFICAR_GASTO', 'S')->get();
 
         if (count($users) > 0) {
+            $today = Carbon::now();
+            $fortnight = $today->copy()->subDays(15);
+            $lastMonth = $today->copy()->subMonthNoOverflow();
+
             foreach ($users as $user) {
                 $allExpenses = array();
                 $totalExpense = 0;
@@ -43,18 +47,19 @@ class AutoExpensesMail extends Command
                 foreach ($expenses as $expense) {
                     $date_paid  = Carbon::parse($expense->PAGO_EM);
                     $date_send = Carbon::parse($user->EMAIL_GASTO);
-                    $date = Carbon::now();
+                    $value = (float)$expense->VALOR;
 
-                    if ($user->TIPO_NOTIF_GASTO == "Quinzenal" && $date_paid->diffInDays($date) >= 0 && $date_paid->diffInDays($date) <= 15) {
+                    if ($user->TIPO_NOTIF_GASTO == "Quinzenal" && $date_paid->between($fortnight, $today)) {
                         $allExpenses[] = $this->getExpense($expense, $date_paid);
-                        $totalExpense += (float)$expense->VALOR;
-                    } elseif ($user->TIPO_NOTIF_GASTO == "Mensal" && $date_paid->diffInMonths($date) == 1) {
+                        $totalExpense += $value;
+                    } elseif ($user->TIPO_NOTIF_GASTO == "Mensal" && ($date_paid->format('m') == $lastMonth->format('m') && ($date_paid->format('Y') == $lastMonth->format('Y')))) {
                         $allExpenses[] = $this->getExpense($expense, $date_paid);
-                        $totalExpense += (float)$expense->VALOR;
+                        $totalExpense += $value;
                     }
                 }
-                if (!empty($allExpenses) && ($date_send->diffInDays($date) == 15 || $date_send->diffInMonths($date) == 1)) {
-                    User::where('id', $user->id)->where('dump', '')->update(['EMAIL_GASTO' => $date]);
+
+                if (!empty($allExpenses) && $totalExpense > 0 && ($date_send->between($fortnight, $today) || $date_send->format('m') == $lastMonth->format('m'))) {
+                    User::where('id', $user->id)->where('dump', '')->update(['EMAIL_GASTO' => $today]);
                     $totalExpense = number_format($totalExpense, 2, ",", ".");
                     Mail::to($user->email)->send(new AllExpenses($user, $allExpenses, $totalExpense));
                     echo "\t\tEmail enviado para " . $user->email . " \n\n";

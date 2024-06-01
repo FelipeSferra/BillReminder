@@ -85,6 +85,7 @@ class IdentifierController extends Controller
             return response()->json(['error' => true, 'errorMessage' => 'Não é possível excluir o item, pois ele está sendo utilizado.Neste caso você deve desabilitar o item.']);
         } else {
             $this->objIdf->where('id', $id)
+                ->where('ID_USR', $userId)
                 ->where('dump', ' ')
                 ->update(['dump' => '*']);
             return response()->json(['message' => 'O identificador foi excluído com sucesso!']);
@@ -105,6 +106,6 @@ class IdentifierController extends Controller
         if ($identifiers)
             return response()->json(['identifiers' => $identifiers])->header('Content-Type', 'application/json');
         else
-            return response()->json(['error' => true, 'errorMessage' => 'Ocorreu ao recuperar os dados']);
+            return response()->json(['error' => true, 'errorMessage' => 'Ocorreu um erro ao recuperar os dados']);
     }
 }

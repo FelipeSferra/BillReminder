@@ -23,19 +23,23 @@
     @include('layouts.loading')
     <div class="container">
         <div class="row">
-            <div class="mt-3 col-md-12 text-end">
-                <button type="button" class="btn btn-outline-dark mt-2" data-bs-toggle="modal" data-bs-target="#ModalCreate"><i
-                        class="fa-solid fa-plus"></i>
-                    Novo
-                </button>
-                <button type="button" id="btnEdit" class="btn btn-outline-primary mt-2" data-bs-toggle="modal"
-                    data-bs-target="#ModalEdit" disabled><i class="fa-solid fa-pen"></i>
-                    Editar
-                </button>
-                <button type="button" id="btnDelete" class="btn btn-outline-danger mt-2" disabled><i
-                        class="fa-solid fa-trash"></i>
-                    Excluir
-                </button>
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="p-2">
+                    <p class="fs-5">Identificadores</p>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-outline-dark mt-2" data-bs-toggle="modal"
+                        data-bs-target="#ModalCreate">
+                        <i class="fa-solid fa-plus"></i> Novo
+                    </button>
+                    <button type="button" id="btnEdit" class="btn btn-outline-primary mt-2" data-bs-toggle="modal"
+                        data-bs-target="#ModalEdit" disabled>
+                        <i class="fa-solid fa-pen"></i> Editar
+                    </button>
+                    <button type="button" id="btnDelete" class="btn btn-outline-danger mt-2" disabled>
+                        <i class="fa-solid fa-trash"></i> Excluir
+                    </button>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -61,6 +65,6 @@
 @endsection
 
 @section('script')
-    <script src="{{ url('assets/js/identifier/actions.js') }}"></script>
-    <script src="{{ url('assets/js/identifier/table-identifiers.js') }}"></script>
+    <script src="{{ url('assets/js/identifier/actions.js') }}?v={{ rand(1, 1000) }}"></script>
+    <script src="{{ url('assets/js/identifier/table-identifiers.js') }}?v={{ rand(1, 1000) }}"></script>
 @endsection

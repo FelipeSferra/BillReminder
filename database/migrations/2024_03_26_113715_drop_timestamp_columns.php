@@ -12,11 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('bills', function (Blueprint $table) {
-            $table->dropColumn('ID_HEX');
-        });
-
-        Schema::table('identifier', function (Blueprint $table) {
-            $table->string('ID_HEX',255)->default('#FFFFFF');
+            $table->dropColumn('CRIADO_EM');
         });
     }
 

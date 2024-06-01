@@ -11,23 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::dropIfExists('debt');
         Schema::create('debt', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('TIPO_CONTA');
-            $table->foreign('TIPO_CONTA')->references('id')->on('identifier')->onUpdate('cascade');
             $table->unsignedBigInteger('ID_USR');
             $table->foreign('ID_USR')->references('id')->on('users')->onUpdate('cascade');
             $table->string('NOME', 30);
-            $table->string('EMAIL')->nullable()->default(' ');
-            $table->string('DESCRICAO', 255);
-            $table->double('VALOR', 10, 2);
-            $table->date('VENCIMENTO');
-            $table->integer('PARCELAS');
-            $table->string('STATUS', 20);
-            $table->char('RECRIAR', 3)->default('Nao');
+            $table->string('EMAIL', 255)->nullable()->default(' ');
+            $table->char('ATIVO', 3)->default('Sim');
             $table->char('DUMP')->default(' ');
-            $table->dateTime('CRIADO_EM');
-            $table->date('PAGO_EM')->nullable();
             $table->timestamps();
         });
     }

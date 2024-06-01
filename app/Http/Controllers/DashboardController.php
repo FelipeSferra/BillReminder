@@ -7,20 +7,24 @@ use App\Models\IdentifierModel;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
-class DashboardController extends BillController {
+class DashboardController extends BillController
+{
     private $objBll;
     private $objIdf;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->objBll = new BillModel();
         $this->objIdf = new IdentifierModel();
     }
 
-    public function index() {
+    public function index()
+    {
         return view('dashboard.main');
     }
 
-    private function getData(int $userId, $month = '*') {
+    private function getData(int $userId, $month = '*')
+    {
         $startDate = Carbon::now()->subMonths(5)->startOfMonth();
         $endDate = Carbon::now()->subMonths(1)->endOfMonth();
 
@@ -41,7 +45,7 @@ class DashboardController extends BillController {
                 ->where('bills.STATUS', 'Pago')
                 ->where('bills.dump', ' ')
                 ->where('identifier.dump', ' ')
-                ->whereMonth('PAGO_EM', 3)
+                ->whereMonth('PAGO_EM', $month)
                 ->groupBy('ANO', 'MES', 'TIPO_CONTA_DESCRICAO', 'IDENTIF_CONTA', 'ID_HEX', 'TIPO_CONTA')
                 ->orderBy('ANO')
                 ->orderBy('MES')
@@ -61,7 +65,8 @@ class DashboardController extends BillController {
         return $bills;
     }
 
-    private function getTableData(int $userId) {
+    private function getTableData(int $userId)
+    {
         $bills = $this->objBll
             ->select('bills.id', 'bills.TIPO_CONTA', 'bills.DESCRICAO', 'bills.VALOR', 'bills.VENCIMENTO', 'bills.PARCELAS', 'bills.STATUS', 'bills.RECRIAR', 'identifier.DESCRICAO AS TIPO_CONTA_DESCRICAO', 'identifier.IDENTIF AS IDENTIF_CONTA', 'identifier.ID_HEX as ID_HEX')
             ->join('identifier', 'bills.TIPO_CONTA', '=', 'identifier.ID')
@@ -76,7 +81,8 @@ class DashboardController extends BillController {
         return $bills;
     }
 
-    private function dueDateTable($userId) {
+    private function dueDateTable($userId)
+    {
         $bills = $this->objBll
             ->select('bills.id', 'bills.TIPO_CONTA', 'bills.DESCRICAO', 'bills.VALOR', 'bills.VENCIMENTO', 'bills.PARCELAS', 'bills.STATUS', 'bills.RECRIAR', 'identifier.DESCRICAO AS TIPO_CONTA_DESCRICAO', 'identifier.IDENTIF AS IDENTIF_CONTA', 'identifier.ID_HEX as ID_HEX')
             ->join('identifier', 'bills.TIPO_CONTA', '=', 'identifier.ID')
@@ -90,7 +96,8 @@ class DashboardController extends BillController {
         return $bills;
     }
 
-    public function getDashboardData() {
+    public function getDashboardData()
+    {
         $userId = Auth::user()->id;
         $allBills = $this->getData($userId);
 
@@ -108,6 +115,8 @@ class DashboardController extends BillController {
             ->whereMonth('PAGO_EM', Carbon::now('America/Sao_Paulo')->month)
             ->first();
 
+        if ($monthlyExpenses->TOTAL_VALOR < 1)
+            $monthlyExpenses = 'Nenhum valor gasto!';
         if ($countDueDate === 0)
             $countDueDate = 'Sem contas à vencer!';
         if ($countBills === 0)
@@ -132,6 +141,6 @@ class DashboardController extends BillController {
                 'monthlyExpenses' => $monthlyExpenses
             ])->header('Content-Type', 'application/json');
         else
-            return response()->json(['error' => true, 'errorMessage' => 'Ocorreu ao recuperar os dados']);
+            return response()->json(['error' => true, 'errorMessage' => 'Ocorreu um erro ao recuperar os dados']);
     }
 }

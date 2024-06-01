@@ -18,7 +18,6 @@ class BillModel extends Model {
         'STATUS',
         'RECRIAR',
         'DUMP',
-        'CRIADO_EM',
         'PAGO_EM',
     ];
 

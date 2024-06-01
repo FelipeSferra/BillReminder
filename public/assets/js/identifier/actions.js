@@ -20,9 +20,18 @@ $(document).ready(function () {
             $('#loading').addClass('d-none');
         }
     }).catch(function (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Ocorreu um erro inesperado'
+        });
         console.log(error);
     });
 });
+
+jscolor.presets.default = {
+    format: 'hex'
+};
 
 $('#ModalCreate').on('hidden.bs.modal', function () {
     cleanFields();
@@ -45,28 +54,29 @@ $('#formCrt').on('submit', function (e) {
 
         if (data.error) {
             Swal.fire({
-                icon: "error",
-                title: "Oops...",
+                icon: 'error',
+                title: 'Oops...',
                 text: data.errorMessage
             });
         } else {
             Swal.fire({
-                position: "top-end",
-                icon: "success",
+                position: 'top-end',
+                icon: 'success',
                 title: data.message,
                 showConfirmButton: false,
                 timer: 1500
             }).then(() => {
                 reloadTable();
-                $("#ModalCreate").modal('hide');
+                $('#ModalCreate').modal('hide');
             });
         }
     }).catch(function (error) {
         Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: error
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Ocorreu um erro inesperado'
         });
+        console.log(error);
     });
 });
 
@@ -87,28 +97,29 @@ $('#formEdt').on('submit', function (e) {
 
         if (data.error) {
             Swal.fire({
-                icon: "error",
-                title: "Oops...",
+                icon: 'error',
+                title: 'Oops...',
                 text: data.errorMessage
             });
         } else {
             Swal.fire({
-                position: "top-end",
-                icon: "success",
+                position: 'top-end',
+                icon: 'success',
                 title: data.message,
                 showConfirmButton: false,
                 timer: 1500
             }).then(() => {
                 reloadTable();
-                $("#ModalEdit").modal('hide');
+                $('#ModalEdit').modal('hide');
             });
         }
     }).catch(function (error) {
         Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: error
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Ocorreu um erro inesperado'
         });
+        console.log(error);
     });
 });
 
@@ -136,6 +147,7 @@ $('#btnEdit').on('click', function (e) {
             $('#descricaoEdt').val(data.DESCRICAO);
 
             $('#id_hexEdt').val(data.ID_HEX);
+            $('#id_hexEdt')[0].jscolor.fromString('#' + data.ID_HEX);
             $('#ativoEdt option').each(function () {
                 if ($(this).data('ativo') === data.ATIVO) {
                     $(this).prop('selected', true);
@@ -145,10 +157,11 @@ $('#btnEdit').on('click', function (e) {
         }
     }).catch(function (error) {
         Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: error
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Ocorreu um erro inesperado'
         });
+        console.log(error);
     });
 });
 
@@ -157,7 +170,7 @@ $('#btnDelete').on('click', function (e) {
     e.preventDefault();
     Swal.fire({
         title: 'Você tem certeza?',
-        text: "Não será possível reverter essa ação!",
+        text: 'Não será possível reverter essa ação!',
         icon: 'warning',
         cancelButtonText: 'Cancelar',
         showCancelButton: true,
@@ -176,14 +189,14 @@ function Delete() {
 
         if (data.error) {
             Swal.fire({
-                icon: "error",
-                title: "Oops...",
+                icon: 'error',
+                title: 'Oops...',
                 text: data.errorMessage
             });
         } else {
             Swal.fire({
-                position: "top-end",
-                icon: "success",
+                position: 'top-end',
+                icon: 'success',
                 title: data.message,
                 showConfirmButton: false,
                 timer: 1500
@@ -193,10 +206,11 @@ function Delete() {
         }
     }).catch(function (error) {
         Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: error
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Ocorreu um erro inesperado'
         });
+        console.log(error);
     });
 }
 
@@ -209,8 +223,8 @@ function reloadTable() {
 
         if (data.error) {
             Swal.fire({
-                icon: "error",
-                title: "Oops...",
+                icon: 'error',
+                title: 'Oops...',
                 text: data.errorMessage
             });
         } else {
@@ -220,6 +234,11 @@ function reloadTable() {
             loadIdentifierTable(identifiers);
         }
     }).catch(function (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Ocorreu um erro inesperado'
+        });
         console.log(error);
     });
 }
@@ -229,4 +248,5 @@ function cleanFields() {
     $('#descricao').val('');
     $('#ativo').val('Sim').change();
     $('#id_hex').val('#FFFFFF');
+    $('#id_hex')[0].jscolor.fromString('#FFFFFF');
 }

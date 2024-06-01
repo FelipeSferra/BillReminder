@@ -1,7 +1,9 @@
-$(document).ready(function() {
+$(document).ready(function () {
+    $('#loading').removeClass('d-none');
     var url = route('dashboard.data');
 
-    axios.get(url).then(function(response) {
+    axios.get(url).then(function (response) {
+        $('#loading').addClass('d-none');
         var data = response.data;
         if (data.error) {
             Swal.fire({
@@ -22,13 +24,16 @@ $(document).ready(function() {
             loadDueDate(tableDueDate);
             loadExpensesHistory(allBills);
             loadMonthlyChart(monthBills);
-
-            monthlyExpenses = formatValue(monthlyExpenses.TOTAL_VALOR);
-            $('#monthlyExpenses').text("R$ " + monthlyExpenses);
+            if (monthlyExpenses.hasOwnProperty('TOTAL_VALOR')) {
+                monthlyExpenses = formatValue(monthlyExpenses.TOTAL_VALOR);
+                $('#monthlyExpenses').text("R$ " + monthlyExpenses);
+            } else {
+                $('#monthlyExpenses').text(monthlyExpenses);
+            }
             $('#billsDue').text(countDueDate);
             $('#openBills').text(countBills);
         }
-    }).catch(function(error) {
+    }).catch(function (error) {
         console.log(error);
     });
 });

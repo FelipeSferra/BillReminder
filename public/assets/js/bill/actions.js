@@ -1,7 +1,6 @@
 var idBill;
 var idColors = {};
 var identifiers;
-var idColors;
 var bills;
 var tipo = $('#tipoVisu').data('checked');
 
@@ -10,7 +9,9 @@ $(document).ready(function () {
     var url = route('bill.data');
 
     axios.get(url).then(function (response) {
+        $('#loading').addClass('d-none');
         var data = response.data;
+
         if (data.error) {
             Swal.fire({
                 icon: "error",
@@ -28,7 +29,6 @@ $(document).ready(function () {
 
             loadCompleteTable(bills, idColors);
             loadSimpleTable(billsPerType, idColors);
-            $('#loading').addClass('d-none');
         }
 
     }).catch(function (error) {
@@ -47,17 +47,13 @@ $('#tipoVisu').bootstrapToggle({
     offstyle: 'secondary'
 });
 
-jscolor.presets.default = {
-    format: 'hex'
-};
-
 $('#formCrt').on('shown.bs.modal', function () {
     loadOptions(identifiers, 'Crt');
 });
 
 $('#formEdt').on('show.bs.modal', function () {
     loadOptions(identifiers, 'Edt');
-})
+});
 
 //envia o formulario de criação
 $('#formCrt').on('submit', function (e) {
@@ -346,6 +342,9 @@ function changeFilter(tipo) {
 }
 
 function updateFilter(data, tipo) {
+    data.forEach(function (color) {
+        idColors[color.TIPO_CONTA] = color.ID_HEX;
+    });
     if (tipo === 'Completo') {
         destroyComplete();
         loadCompleteTable(data, idColors);

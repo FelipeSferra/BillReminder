@@ -11,6 +11,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "mindtwo/laravel-blade-spaceless": "^1.2",
+        "php-flasher/flasher-laravel": "^1.15",
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {

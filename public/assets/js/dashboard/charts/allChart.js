@@ -5,14 +5,14 @@ function loadExpensesHistory(data) {
         $('#allBills-dashboard').css({
             'display': 'none'
         });
-        $('#hasNothing').css({
+        $('#hasNothingAll').css({
             'display': 'block',
             'max-width': '100%',
             'height': '300px',
             'max-height': '100%'
         });
-        $('#hasNothing').addClass('d-flex justify-content-center align-items-center font-weight-bolder')
-        $('#hasNothing').text('Nenhum dado encontrado');
+        $('#hasNothingAll').addClass('d-flex justify-content-center align-items-center font-weight-bolder')
+        $('#hasNothingAll').text('Nenhum dado encontrado');
     } else {
         datasets.push({
             label: 'Gastos de Meses Passados',

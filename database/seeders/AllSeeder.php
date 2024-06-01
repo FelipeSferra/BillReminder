@@ -3,13 +3,15 @@
 namespace Database\Seeders;
 
 use App\Models\BillModel;
+use App\Models\DebtModel;
 use App\Models\IdentifierModel;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
-class AllSeeder extends Seeder {
+class AllSeeder extends Seeder
+{
     /**
      * Run the database seeds.
      */
@@ -17,28 +19,38 @@ class AllSeeder extends Seeder {
     private $identifier;
     private $bill;
 
-    public function run(): void {
+    public function run(): void
+    {
         $this->user = new User();
         $this->identifier = new IdentifierModel();
         $this->bill = new BillModel();
 
-        /*         $this->user->create([
-            'name' => 'testes',
-            'email' => 'felipesferra@hotmail.com',
-            'password' => Hash::make(12345678),
-        ]);
-        */
         $userId = $this->user->select('id')->where('name', 'testes')->first();
 
-        for ($i = 3; $i <= 20; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
+            DebtModel::create([
+                'ID_USR' => $userId->id,
+                'TIPO_CONTA' => 71,
+                'NOME' => 'teste',
+                'EMAIL' => 'teste@teste.com',
+                'DESCRICAO' => 'Conta teste ' . $i,
+                'VALOR' => 100 * ($i + 1),
+                'VENCIMENTO' => '2024-03-19',
+                'PARCELAS' => 3,
+                'STATUS' => 'Pagar',
+            ]);
+        }
+
+/*         for ($i = 1; $i <= 5; $i++) {
             $this->identifier->create([
                 'ID_USR' => $userId->id,
                 'IDENTIF' => 'Boleto',
                 'DESCRICAO' => 'teste ' . $i,
                 'ATIVO' => 'Sim'
             ]);
-        }
-        /* for ($i = 1; $i <= 3; $i++) {
+        } */
+/*
+        for ($i = 1; $i <= 5; $i++) {
             if ($i == 2) {
                 $this->bill->create([
                     'TIPO_CONTA' => $i,
@@ -49,7 +61,6 @@ class AllSeeder extends Seeder {
                     'PARCELAS' => $i,
                     'STATUS' => 'Pago',
                     'RECRIAR' => 'Sim',
-                    'CRIADO_EM' => '2024-01-01 00:00:00',
                     'PAGO_EM' => '2024-01-11'
                 ]);
             } else {
@@ -62,7 +73,6 @@ class AllSeeder extends Seeder {
                     'PARCELAS' => $i,
                     'STATUS' => 'Pagar',
                     'RECRIAR' => 'Sim',
-                    'CRIADO_EM' => '2024-01-01 00:00:00',
                 ]);
             }
         } */

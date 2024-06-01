@@ -28,7 +28,10 @@
     @include('layouts.loading')
     <div class="container">
         <div class="row">
-            <div class="d-flex justify-content-end">
+            <p class="fs-5">Contas</p>
+        </div>
+        <div class="row mt-2">
+            <div class="d-flex justify-content-end align-items-center">
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-4">
@@ -116,7 +119,7 @@
     </div>
 @endsection
 @section('script')
-    <script src="{{ url('assets/js/bill/actions.js') }}"></script>
-    <script src="{{ url('assets/js/bill/table-complete.js') }}"></script>
-    <script src="{{ url('assets/js/bill/table-simple.js') }}"></script>
+    <script src="{{ url('assets/js/bill/actions.js') }}?v={{ rand(1, 1000) }}"></script>
+    <script src="{{ url('assets/js/bill/table-complete.js') }}?v={{ rand(1, 1000) }}"></script>
+    <script src="{{ url('assets/js/bill/table-simple.js') }}?v={{ rand(1, 1000) }}"></script>
 @endsection

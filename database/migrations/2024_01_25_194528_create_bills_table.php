@@ -19,7 +19,6 @@ return new class extends Migration {
             $table->double('VALOR', 10, 2);
             $table->date('VENCIMENTO');
             $table->integer('PARCELAS');
-            $table->string('ID_HEX',255)->default('#FFFFFF');
             $table->string('STATUS', 20);
             $table->char('RECRIAR',3)->default('Nao');
             $table->char('DUMP')->default(' ');

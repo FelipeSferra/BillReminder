@@ -108,6 +108,18 @@
                     </a>
                 </div>
             </div>
+            <div class="mt-3 col-md-4">
+                <div class="text-center card gradient-card">
+                    <a href="{{ route('paymentsMethods.index') }}">
+                        <div class="card-body">
+                            <div class="mb-3 row">
+                                <i class="fa-solid fa-money-check-dollar-pen fa-3x card-icon"></i>
+                            </div>
+                            <p class="card-title">Formas de pagamento</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

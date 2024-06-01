@@ -29,6 +29,7 @@
 @endsection
 
 @section('content')
+    @include('layouts.loading')
     <div class="header-dashboard container-fluid">
         <div class="row h-100 p-5">
             <div class="col-md-4 align-self-center mt-2">
@@ -85,13 +86,13 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="container mb-3">
         <div class="row">
             <div class="mt-3 col-md-6 mb-3 text-center">
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-title font-weight-bold text-primary">Histórico de gastos</h6>
-                        <div id="hasNothing" style="display: none;"></div>
+                        <div id="hasNothingAll" style="display: none;"></div>
                         <canvas id="allBills-dashboard" style="max-width: 100%;height: 300px; max-height:100%;"></canvas>
                     </div>
                 </div>
@@ -100,6 +101,7 @@
                 <div class="card">
                     <div class="card-body ">
                         <h6 class="card-title font-weight-bold text-primary">Contas pagas</h6>
+                        <div id="hasNothingMonth" style="display: none;"></div>
                         <canvas id="monthBills-dashboard" style="max-width: 100%;height: 300px; max-height:100%;"></canvas>
                     </div>
                 </div>
@@ -141,14 +143,9 @@
 @endsection
 
 @section('script')
-<script src="{{url('assets/js/dashboard/general.js')}}"></script>
-<script src="{{url('assets/js/dashboard/charts/allChart.js')}}"></script>
-<script src="{{url('assets/js/dashboard/charts/monthlyChart.js')}}"></script>
-<script src="{{url('assets/js/dashboard/tables/dueDateTable.js')}}"></script>
-<script src="{{url('assets/js/dashboard/tables/topBillsTable.js')}}"></script>
-    {{-- @include('script.dashboard.general')
-    @include('script.dashboard.charts.allChart')
-    @include('script.dashboard.charts.monthlyChart')
-    @include('script.dashboard.tables.dueDateTable')
-    @include('script.dashboard.tables.topBillsTable') --}}
+    <script src="{{ url('assets/js/dashboard/general.js') }}?v={{ rand(1, 1000) }}"></script>
+    <script src="{{ url('assets/js/dashboard/charts/allChart.js') }}?v={{ rand(1, 1000) }}"></script>
+    <script src="{{ url('assets/js/dashboard/charts/monthlyChart.js') }}?v={{ rand(1, 1000) }}"></script>
+    <script src="{{ url('assets/js/dashboard/tables/dueDateTable.js') }}?v={{ rand(1, 1000) }}"></script>
+    <script src="{{ url('assets/js/dashboard/tables/topBillsTable.js') }}?v={{ rand(1, 1000) }}"></script>
 @endsection

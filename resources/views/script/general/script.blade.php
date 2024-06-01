@@ -10,13 +10,7 @@
     @endif
     @if (session()->has('errors'))
         @foreach ($errors->all() as $error)
-            var data = '{{ $error }}';
+            toastr.error("{{ $error }}")
         @endforeach
-
-        Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: data
-        });
     @endif
 </script>

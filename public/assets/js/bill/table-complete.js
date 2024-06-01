@@ -21,7 +21,6 @@ function loadCompleteTable(data, idColors) {
 
         },
         'language': {
-            'loadingRecords': 'teste',
             'emptyTable': 'Nenhum dado encontrado',
             'paginate': {
                 'next': '<i class="fa-thin fa-forward"></i>',
@@ -49,6 +48,7 @@ function loadCompleteTable(data, idColors) {
                 'targets': 0,
                 'createdCell': function (td, cellData, rowData, row, col) {
                     if (rowData.TIPO_CONTA in idColors) {
+
                         $(td).empty();
 
                         var div = $('<div/>', {

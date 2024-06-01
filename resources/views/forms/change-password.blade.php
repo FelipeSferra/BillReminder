@@ -1,4 +1,4 @@
-<form method="POST" action="{{ route('user.change-pass') }}">
+<form method="POST" id="formPass" name="formPass">
     @csrf
 
     <div class="d-flex justify-content-center">

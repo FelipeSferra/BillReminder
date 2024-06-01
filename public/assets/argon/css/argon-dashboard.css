@@ -3671,7 +3671,7 @@ fieldset:disabled .btn {
     --bs-btn-active-bg: #7e8ee9;
     --bs-btn-active-border-color: #6e80e7;
     --bs-btn-active-shadow: none;
-    --bs-btn-disabled-color: #000;
+    --bs-btn-disabled-color: #fff;
     --bs-btn-disabled-bg: #5e72e4;
     --bs-btn-disabled-border-color: #5e72e4;
 }
