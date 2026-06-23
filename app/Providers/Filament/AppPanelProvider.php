@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use Andreia\FilamentUiSwitcher\FilamentUiSwitcherPlugin;
 use App\Filament\Clusters\App\UserSettings\UserSettingsCluster;
 use App\Filament\Pages\Auth\Login;
 use App\Filament\Resources\Bills\BillResource;
@@ -18,6 +19,7 @@ use Filament\Navigation\NavigationGroup;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
@@ -76,7 +78,11 @@ class AppPanelProvider extends PanelProvider
                     ->icon('heroicon-o-adjustments-horizontal')
                     ->url(fn(): string => UserSettingsCluster::getUrl()),
             ])
-            ->sidebarCollapsibleOnDesktop()
+            ->plugin(
+                FilamentUiSwitcherPlugin::make()
+                    ->iconRenderHook(PanelsRenderHook::TOPBAR_END)
+                    ->withModeSwitcher()
+            )
             ->globalSearch(false);
     }
 }

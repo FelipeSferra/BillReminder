@@ -3,3 +3,11 @@
 @source '../../../../app/Filament/**/*';
 @source '../../../../resources/views/filament/**/*';
 @source '../../../../vendor/bezhansalleh/filament-panel-switch/resources/views/**/*.blade.php';
+
+.fi-topbar-end ~ * {
+    margin-inline-start: 1rem;
+}
+
+.fi-dropdown-list:has(.fi-theme-switcher) {
+    display: none !important;
+}

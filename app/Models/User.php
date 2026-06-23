@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Andreia\FilamentUiSwitcher\Models\Traits\HasUiPreferences;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
@@ -20,7 +22,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, HasUuids, SoftDeletes, HasRoles;
+    use HasFactory, Notifiable, HasUuids, SoftDeletes, HasRoles, HasUiPreferences;
 
     /**
      * Determine if the user can access the given panel.
@@ -45,6 +47,7 @@ class User extends Authenticatable implements FilamentUser
             'password' => 'hashed',
             'EMAIL_GASTO' => 'date',
             'VENC_DIAS' => 'integer',
+            'ui_preferences' => 'array'
         ];
     }
 }

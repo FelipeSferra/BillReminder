@@ -39,7 +39,8 @@ class AppServiceProvider extends ServiceProvider
                     'app' => 'heroicon-o-home',
                     'admin' => 'heroicon-o-cog-6-tooth',
                 ])
-                ->renderHook('panels::global-search.before')
+                ->renderHook('panels::topbar.end')
+                ->iconSize(16)
                 ->slideOver()
                 ->modalHeading('Selecionar painel')
                 ->modalWidth('sm');
